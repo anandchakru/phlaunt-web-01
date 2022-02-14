@@ -1,0 +1,66 @@
+import React, { useEffect, useState } from 'react'
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import Album from './Album'
+import Masonry from '@mui/lab/Masonry'
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
+import Backdrop from '@mui/material/Backdrop'
+import { TransitionMotion, spring } from 'react-motion'
+import {
+  loadAlbum,
+  selectAlbum,
+  selectAlbumMore,
+  selectAlbumStatus
+} from './AlbumSlice'
+
+export function Albums() {
+  const [showLoading, setShowLoading] = useState(true)
+
+  const dispatch = useAppDispatch()
+  const album = useAppSelector(selectAlbum)
+  const albumStatus: 'idle' | 'loading' | 'failed' = useAppSelector(selectAlbumStatus)
+  const albumMore = useAppSelector(selectAlbumMore)
+  useEffect(() => {
+    dispatch(loadAlbum({ offset: 0, limit: 10 }))
+  }, [])
+  useEffect(() => {
+    setShowLoading(true)
+  }, [albumStatus])
+  const willLeave = () => { return { opacity: spring(0) } }
+  const willEnter = () => { return { opacity: spring(1) } }
+
+  return (
+    <>
+      <h1>Album</h1>
+      {<Masonry columns={3}>
+        {album.map(item => <AlbumCard key={item.id} data={item} />)}
+      </Masonry>}
+      {/* <TransitionMotion willLeave={willLeave} willEnter={willEnter}
+        styles={album.map(item => ({
+          key: item.id,
+          data: item,
+          style: { opacity: spring(1) }
+        }))}>
+        {interpolatedStyles =>
+          <>
+            {interpolatedStyles.map(item => {
+              return <AlbumCard key={item.id} data={item.data} />
+            })}
+          </>
+        }
+      </TransitionMotion> */}
+      {albumStatus === 'failed' && <span>{albumStatus}</span>}
+      {albumStatus === 'loading' && showLoading && <Backdrop
+        sx={{ backgroundColor: '#ffffffdd', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={albumStatus === 'loading'}
+        onClick={() => { setShowLoading(false) }}
+      >
+        <CircularProgress />
+      </Backdrop>
+      }
+      {albumMore && <Button disabled={albumStatus === 'loading'}
+        variant="text" onClick={() => { dispatch(loadAlbum({ offset: 11, limit: 10 })) }}>Load More</Button>}
+      {/* <div>{album && JSON.stringify(album)}</div> */}
+    </>
+  )
+}

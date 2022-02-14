@@ -1,58 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
+import './App.scss'
+import { AlbumGallery } from './features/album/AlbumGallery'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+
+import { useAppSelector, useAppDispatch } from './app/hooks'
+import {
+  loadAlbum,
+  selectAlbum,
+  selectAlbumMore,
+  selectAlbumStatus
+} from './features/album/AlbumSlice'
+
+import {
+  useLocation,
+} from "react-router-dom"
+
 
 function App() {
+  const dispatch = useAppDispatch()
+  const location = useLocation()
+  useEffect(() => {
+    dispatch(loadAlbum({ offset: 0, limit: 10 }))
+  }, [location])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+    <Container sx={{ textAlign: 'center' }}>
+      <Box sx={{ my: 10 }}>
+        <AlbumGallery />
+      </Box>
+    </Container>
+  )
 }
 
-export default App;
+export default App
