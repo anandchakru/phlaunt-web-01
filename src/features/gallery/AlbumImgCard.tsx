@@ -6,14 +6,21 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Backdrop from '@mui/material/Backdrop'
 import { TransitionMotion, spring } from 'react-motion'
 import {
-  loadAlbum,
+  Image,
+  loadGallery,
   selectAlbum,
   selectAlbumMore,
   selectAlbumStatus
-} from './AlbumSlice'
+} from './GallerySlice'
 import { useParams } from "react-router-dom"
 
-export function AlbumImgCard() {
+interface AlbumImgCardProps {
+  id?: string
+  key?: string
+  data?: Image
+}
+
+export function AlbumImgCard(prop: AlbumImgCardProps) {
   const { albumId, imgId } = useParams();
   return (
     <h1>Album Img Card - {albumId}.{imgId}</h1>

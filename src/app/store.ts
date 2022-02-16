@@ -1,10 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 // import counterReducer from '../features/counter/counterSlice'
-import albumReducer from '../features/album/AlbumSlice'
+import galleryReducer from '../features/gallery/GallerySlice'
 
 export const store = configureStore({
   reducer: {
-    album: albumReducer,
+    gallery: galleryReducer,
   },
 })
 

@@ -6,11 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Backdrop from '@mui/material/Backdrop'
 import { TransitionMotion, spring } from 'react-motion'
 import {
-  loadAlbum,
+  loadGallery,
   selectAlbum,
   selectAlbumMore,
   selectAlbumStatus
-} from './AlbumSlice'
+} from './GallerySlice'
 import { useParams } from "react-router-dom"
 
 export function AlbumImgView() {

@@ -14,21 +14,34 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import ShareIcon from '@mui/icons-material/Share'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom"
 
-interface AlbumProps {
+interface GalleryCardProps {
   id?: string
   data?: any
   key?: string
 }
 
-export function AlbumCard(prop: AlbumProps) {
-  let navigate = useNavigate();
+export function GalleryCard(prop: GalleryCardProps) {
+  let navigate = useNavigate()
+  const strToColor = (str: string) => {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }} raised={true}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: strToColor(prop.data.owner) }} aria-label="recipe">
             {prop.data.owner[0]}
           </Avatar>
         }
@@ -51,7 +64,8 @@ export function AlbumCard(prop: AlbumProps) {
         alt={prop.data.title}
         sx={{ objectFit: 'cover', cursor: 'pointer' }}
         onClick={() => {
-          navigate(`/gallery/album/${prop.data.id}`, { replace: false });
+          // TODO: fix returning back to GalleryHome with the same view and then enable this          
+          // navigate(`/gallery/album/${prop.id}`, { replace: false })
         }}
       />
       {prop.data.description && <CardContent>

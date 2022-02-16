@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState, AppThunk } from '../../app/store'
-import { fetchAlbum } from './AlbumAPI'
+import { fetchGallery } from './GalleryAPI'
 
 export interface Image {
   id: string,
@@ -16,7 +16,7 @@ export interface Album {
   owner: string,
   created: string,
   thumbnail: string,
-  images: Image[],
+  images: { [key: string]: Image },
   published: boolean,
   tags: string[],
 }
@@ -26,7 +26,7 @@ export interface AlbumState {
   fetched: number
   more: boolean
   status: 'idle' | 'loading' | 'failed'
-  data: Album[]
+  data: { [key: string]: Album }
 }
 
 const initialState: AlbumState = {
@@ -35,22 +35,22 @@ const initialState: AlbumState = {
   fetched: 0,
   more: false,
   status: 'idle',
-  data: [],
+  data: {},
 }
 
-export const loadAlbum = createAsyncThunk(
-  'album/fetchAlbum', async ({ offset, limit }: { offset: number, limit: number }, { getState }) => {
+export const loadGallery = createAsyncThunk(
+  'gallery/fetchGallery', async ({ offset, limit }: { offset: number, limit: number }, { getState }) => {
     const state = getState() as RootState
-    if (offset > state.album.fetched - 1) {
-      const response = await fetchAlbum(offset, limit)
+    if (offset > state.gallery.fetched - 1) {
+      const response = await fetchGallery(offset, limit)
       return response
     } else {
       return null
     }
   }
 )
-export const albumSlice = createSlice({
-  name: 'album',
+export const gallerySlice = createSlice({
+  name: 'gallery',
   initialState,
   reducers: {
     setOffset: (state, action: PayloadAction<number>) => {
@@ -59,27 +59,28 @@ export const albumSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadAlbum.pending, (state) => {
+      .addCase(loadGallery.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(loadAlbum.fulfilled, (state, action) => {
+      .addCase(loadGallery.fulfilled, (state, action) => {
         state.status = 'idle'
         if (action.payload) {
           state.offset = action.payload.offset
           state.limit = action.payload.limit
           state.more = action.payload.more
-          state.data = [...state.data, ...action.payload.data]
-          state.fetched = state.data.length
+          state.data = { ...state.data, ...action.payload.data }
+          state.fetched = Object.keys(state.data).length
         }
       })
-      .addCase(loadAlbum.rejected, (state) => {
+      .addCase(loadGallery.rejected, (state) => {
         state.status = 'failed'
       })
   }
 })
 
-export const { setOffset } = albumSlice.actions
-export const selectAlbum = (state: RootState) => state.album.data
-export const selectAlbumMore = (state: RootState) => state.album.more
-export const selectAlbumStatus = (state: RootState) => state.album.status
-export default albumSlice.reducer
+export const { setOffset } = gallerySlice.actions
+export const selectAlbum = (state: RootState) => state.gallery.data
+export const selectAlbumKeys = (state: RootState) => Object.keys(state.gallery.data).sort()
+export const selectAlbumMore = (state: RootState) => state.gallery.more
+export const selectAlbumStatus = (state: RootState) => state.gallery.status
+export default gallerySlice.reducer

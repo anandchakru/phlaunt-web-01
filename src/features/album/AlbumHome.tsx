@@ -6,16 +6,31 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Backdrop from '@mui/material/Backdrop'
 import { TransitionMotion, spring } from 'react-motion'
 import {
-  loadAlbum,
+  Album,
+  loadGallery,
   selectAlbum,
   selectAlbumMore,
   selectAlbumStatus
-} from './AlbumSlice'
+} from '../gallery/GallerySlice'
 import { useParams } from "react-router-dom"
+import { AlbumImgCard } from '../gallery/AlbumImgCard'
 
 export function AlbumHome() {
-  const { albumId } = useParams();
+  const [album, setAlbum] = useState<Album | undefined>(undefined)
+  const [albumImgKeys, setAlbumImgKeys] = useState<string[]>([])
+  const albums = useAppSelector(selectAlbum)
+  const { albumId } = useParams()
+  useEffect(() => {
+    if (albumId) {
+      setAlbum(albums[albumId])
+      if (albums[albumId]) {
+        setAlbumImgKeys(Object.keys(albums[albumId].images))
+      }
+    }
+  }, [albumId, albums])
   return (
-    <h1>Album Home - {albumId}</h1>
+    albumImgKeys && <Masonry columns={3}>
+      {albumImgKeys.map(item => album && album[item].images[item]?.url && <AlbumImgCard key={item} id={item} data={album.images[item]} />)}
+    </Masonry>
   )
 }

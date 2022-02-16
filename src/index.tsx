@@ -13,9 +13,9 @@ import {
 } from "react-router-dom"
 // import { Album } from './features/album/Album'
 // import { Albums } from './features/album/Albums_tsx'
-import { AlbumGallery } from './features/album/AlbumGallery'
+import { GalleryHome } from './features/gallery/AlbumGallery'
 import { AlbumHome } from './features/album/AlbumHome'
-import { AlbumImgView } from './features/album/AlbumImgView'
+import { AlbumImgView } from './features/gallery/AlbumImgView'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,12 +27,13 @@ ReactDOM.render(
               <Route path=":albumId" element={<Album />} />
             </Route> */}
           </Route>
-          <Route path="gallery" element={<App />} />
-          <Route path="gallery/album/:albumId" element={<AlbumHome />} />
-          <Route path="gallery/album/:albumId/img/:imgId" element={<AlbumImgView />} />
+          <Route path="gallery" element={<App />}>
+            <Route path="album/:albumId" element={<AlbumHome />} />
+            <Route path="album/:albumId/img/:imgId" element={<AlbumImgView />} />
+          </Route>
           <Route
             path="*"
-            element={<Navigate to="/gallery" />}
+            element={<div>404</div>}
           />
         </Routes>
       </BrowserRouter>
