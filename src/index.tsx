@@ -13,7 +13,7 @@ import {
 } from "react-router-dom"
 // import { Album } from './features/album/Album'
 // import { Albums } from './features/album/Albums_tsx'
-import { GalleryHome } from './features/gallery/AlbumGallery'
+// import { GalleryHome } from './features/gallery/AlbumGallery'
 import { AlbumHome } from './features/album/AlbumHome'
 import { AlbumImgView } from './features/gallery/AlbumImgView'
 

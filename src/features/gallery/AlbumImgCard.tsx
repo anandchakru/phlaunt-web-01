@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import Masonry from '@mui/lab/Masonry'
-import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
-import Backdrop from '@mui/material/Backdrop'
-import { TransitionMotion, spring } from 'react-motion'
+import React, { useEffect } from 'react'
 import {
   Image,
-  loadGallery,
-  selectAlbum,
-  selectAlbumMore,
-  selectAlbumStatus
 } from './GallerySlice'
 import { useParams } from "react-router-dom"
 
@@ -22,6 +12,7 @@ interface AlbumImgCardProps {
 
 export function AlbumImgCard(prop: AlbumImgCardProps) {
   const { albumId, imgId } = useParams();
+  useEffect(() => { }, []);
   return (
     <h1>Album Img Card - {albumId}.{imgId}</h1>
   )

@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { useAppSelector } from '../../app/hooks'
 import Masonry from '@mui/lab/Masonry'
-import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
-import Backdrop from '@mui/material/Backdrop'
-import { TransitionMotion, spring } from 'react-motion'
 import {
   Album,
-  loadGallery,
   selectAlbum,
-  selectAlbumMore,
-  selectAlbumStatus
 } from '../gallery/GallerySlice'
 import { useParams } from "react-router-dom"
 import { AlbumImgCard } from '../gallery/AlbumImgCard'

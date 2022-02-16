@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -8,13 +8,8 @@ import { GalleryHome } from './features/gallery/AlbumGallery'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
-import { useAppSelector, useAppDispatch } from './app/hooks'
-import {
-  loadGallery,
-  selectAlbum,
-  selectAlbumMore,
-  selectAlbumStatus
-} from './features/gallery/GallerySlice'
+import { useAppDispatch } from './app/hooks'
+import { loadGallery } from './features/gallery/GallerySlice'
 
 import {
   useLocation,
@@ -26,7 +21,7 @@ function App() {
   const location = useLocation()
   useEffect(() => {
     dispatch(loadGallery({ offset: 0, limit: 10 }))
-  }, [location])
+  }, [location, dispatch])
   return (
     <Container sx={{ textAlign: 'center' }}>
       <Box sx={{ my: 10 }}>
