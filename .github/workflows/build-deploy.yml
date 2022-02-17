@@ -30,7 +30,7 @@ jobs:
       run: npm run build
     
     - name: Copy for 404
-      run: cp ./public/index.html ./public/404.html
+      run: cp ./build/index.html ./build/404.html
 
     - name: Run tests
       run: echo -e "npm run test"
